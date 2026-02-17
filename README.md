@@ -4,9 +4,11 @@
 
 # One Buffalo Prints
 
-Welcome to **One Buffalo Prints**, the open-source 3D modeling division of **[One Buffalo Labs](https://onebuffalolabs.com)**. Just like the legendary weather systems off Lake Erie, we're dropping heavy, consistent, and totally free designs for the maker community.
+Welcome to **One Buffalo Prints**, the open-source 3D modeling playground of **[One Buffalo Labs](https://onebuffalolabs.com)**. 
 
-This repository is the central hub for all our customizable design files, 3D meshes, and documentation.
+Forget the promise of "consistent" updates—my output here is a lot like a real weather system off Lake Erie: incredibly bursty and highly unpredictable. I might drop a flurry of five new designs in a single weekend, and then go completely quiet for a month or two while my focus shifts back to software projects like [FilaMeter](https://filameter.com/). 
+
+This repository is strictly a passion project area. It's the central hub for all the fun toys, practical household fixes, Creality K2 SE mods, and random 3D meshes churning out of my workshop.
 
 ---
 
