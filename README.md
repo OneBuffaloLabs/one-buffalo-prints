@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/banner/banner-1200x400.png" alt="One Buffalo Prints Banner">
+</p>
+
 # One Buffalo Prints
 
 Welcome to **One Buffalo Prints**, the open-source 3D modeling division of **[One Buffalo Labs](https://onebuffalolabs.com)**. Just like the legendary weather systems off Lake Erie, we're dropping heavy, consistent, and totally free designs for the maker community.
