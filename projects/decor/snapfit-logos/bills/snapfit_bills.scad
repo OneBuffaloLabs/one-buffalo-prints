@@ -1,5 +1,5 @@
 // ==========================================
-// SNAPFIT-BILLS: MULTI-PART LOGO (SVG ID VERSION)
+// SNAPFIT-BILLS: MULTI-PART LOGO
 // ==========================================
 
 /* [Dimensions] */
@@ -29,7 +29,7 @@ epsilon = 0.01;
 
 // ==========================================
 // --- ALIGNMENT MATH ---
-// The original SVG width from the Inkscape viewBox
+// The original SVG width from the viewBox
 svg_original_width = 2102.667;
 // Calculate exact scale factor to hit target_width without losing alignment
 scale_factor = target_width / svg_original_width;
@@ -52,7 +52,6 @@ module raw_blue_path() {
 module true_blue_path() {
     difference() {
         raw_blue_path();
-        // 'delta' and 'chamfer=true' expand the streak without creating a destructive spike
         offset(delta = inner_gap, chamfer = true) red_path();
     }
 }
@@ -102,7 +101,7 @@ module blue_inserts() {
 // red_insert();
 // blue_inserts();
 
-// PREVIEW COLOR VIEW (Un-comment to see final look)
+// PREVIEW COLOR VIEW
 color("white") white_base();
 color("red") translate([0,0,base_thickness - pocket_depth + 0.1]) red_insert();
 color("blue") translate([0,0,base_thickness - pocket_depth + 0.1]) blue_inserts();
