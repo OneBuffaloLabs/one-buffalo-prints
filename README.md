@@ -4,9 +4,9 @@
 
 # One Buffalo Prints
 
-Welcome to **One Buffalo Prints**, the open-source 3D modeling playground of **[One Buffalo Labs](https://onebuffalolabs.com)**. 
+Welcome to **One Buffalo Prints**, the open-source 3D modeling playground of **[One Buffalo Labs](https://onebuffalolabs.com)**.
 
-Forget the promise of "consistent" updates—my output here is a lot like a real weather system off Lake Erie: incredibly bursty and highly unpredictable. I might drop a flurry of five new designs in a single weekend, and then go completely quiet for a month or two while my focus shifts back to software projects like [FilaMeter](https://filameter.com/). 
+Forget the promise of "consistent" updates—my output here is a lot like a real weather system off Lake Erie: incredibly bursty and highly unpredictable. I might drop a flurry of five new designs in a single weekend, and then go completely quiet for a month or two while my focus shifts back to software projects like [FilaMeter](https://filameter.com/).
 
 This repository is strictly a passion project area. It's the central hub for all the fun toys, practical household fixes, Creality K2 SE mods, and random 3D meshes churning out of my workshop.
 
@@ -28,7 +28,14 @@ By providing the original OpenSCAD (`.scad`) files right here in this repository
 
 ## How This Repo is Organized
 
-To keep things clean, every model gets its own dedicated folder. Inside a typical project folder, you'll find:
+To keep the root directory clean as the collection grows, all models are sorted by category inside the `projects/` folder:
+
+- `/projects/decor/` — Signs, logos, and display pieces.
+- `/projects/functional/` — Brackets, organizers, and household fixes.
+- `/projects/printer-mods/` — Upgrades and tweaks for hardware like the Creality K2 SE.
+- `/projects/toys/` — Fun prints, props, and fidgets.
+
+Inside a typical project folder (e.g., `/projects/decor/buffalo-bills-logo/`), you'll find:
 
 - `model_name.scad` — The original, customizable OpenSCAD file.
 - `model_name.stl` — The standard exported 3D mesh.
@@ -41,7 +48,7 @@ All designs in the One Buffalo Prints repository are open-source. We highly enco
 
 ## Contributing & Issues
 
-Because my time is split between this and larger software projects, my response time to issues will vary wildly depending on what else is on my plate. *"Eventually"* is my guiding principle for bug fixes here.
+Because my time is split between this and larger software projects, my response time to issues will vary wildly depending on what else is on my plate. _"Eventually"_ is my guiding principle for bug fixes here.
 
 - **Found an issue or need a tweak?** Feel free to open a ticket! Just keep in mind it might take a bit for me to get to it if I'm on a break from 3D modeling.
 - **Know how to fix it yourself?** Pull Requests are highly encouraged! If you spot a problem with a mesh, have a structural improvement for a bracket, or optimized an OpenSCAD script, send a PR. I am much faster at reviewing a good model and hitting "merge" than I am at starting a fix from scratch.
