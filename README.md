@@ -67,3 +67,11 @@ All models and code in this repository are released under the **Creative Commons
 - 🔄 **ShareAlike:** If you remix, transform, or build upon the material, you must distribute your contributions under the exact same license as the original.
 
 _Note: If you are interested in commercial licensing for any of these designs, please reach out to us directly through [One Buffalo Labs](https://onebuffalolabs.com)._
+
+---
+
+### Legal Disclaimer
+
+Certain designs in this repository (such as sports logos) are provided as **fan art** for personal, non-commercial use only. These designs are not affiliated with, authorized by, or endorsed by the Buffalo Bills, the NFL, or any other trademark holder.
+
+**For full legal information and safety warnings, please see [LEGAL.md](LEGAL.md).**

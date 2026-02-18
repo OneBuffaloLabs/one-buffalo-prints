@@ -47,3 +47,7 @@ To structurally adjust the tightness of the fit without using glue, open `snapfi
 - `clearance = 0.15;` (Standard Tight)
 - `clearance = 0.20;` (Easier assembly/Looser)
 - `clearance = 0.10;` (Extremely tight)
+
+---
+
+_Disclaimer: This is a fan-art project provided for personal use only. It is not affiliated with, authorized by, or endorsed by the Buffalo Bills or the National Football League (NFL)._
