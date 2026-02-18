@@ -18,6 +18,7 @@ If you're just looking to download, slice, and get your printer running right aw
 
 - **MakerWorld:** [@Bana0615](https://makerworld.com/en/@Bana0615)
 - **Creality Cloud:** [@Bana0615](https://www.crealitycloud.com/user/2867011039)
+- **Printables:** [@Bana0615](https://www.printables.com/@Bana0615_4259106)
 
 ## The OpenSCAD Philosophy
 
