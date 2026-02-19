@@ -21,8 +21,10 @@ inner_gap = 0.6;
 base_fill_gap = 5.0;
 
 /* [Tolerances] */
-// Gap between insert and pocket walls for friction fit
+// Gap between the main blue insert and pocket walls
 clearance = 0.10;
+// Tighter clearance specifically for the thin red streak
+red_clearance = 0.05;
 
 /* [Internal] */
 master_svg = "images/bills_master.svg";
@@ -72,8 +74,6 @@ module white_base() {
         // Step A: Main unified silhouette (with Morphological Close to fix holes)
         linear_extrude(base_thickness) {
             offset(r = border_thickness) {
-                // This +5 then -5 delta effectively "melts" the shapes together,
-                // filling in any thin gaps or holes before drawing the white border.
                 offset(delta = -base_fill_gap) {
                     offset(delta = base_fill_gap) {
                         raw_blue_path();
@@ -83,12 +83,12 @@ module white_base() {
             }
         }
 
-        // Step B: Cut the Red Pocket
+        // Step B: Cut the Red Pocket (Using tighter red_clearance)
         translate([0, 0, base_thickness - pocket_depth])
             linear_extrude(pocket_depth + epsilon)
-                offset(delta = clearance, chamfer=true) red_path();
+                offset(delta = red_clearance, chamfer=true) red_path();
 
-        // Step C: Cut the Blue Pockets
+        // Step C: Cut the Blue Pockets (Using standard clearance)
         translate([0, 0, base_thickness - pocket_depth])
             linear_extrude(pocket_depth + epsilon)
                 offset(delta = clearance, chamfer=true) true_blue_path();
@@ -109,11 +109,11 @@ module blue_inserts() {
 // Un-comment one line at a time to export to STL
 // ==========================================
 
-// white_base();
+white_base();
 // red_insert();
 // blue_inserts();
 
 // PREVIEW COLOR VIEW
-color("white") white_base();
-color("red") translate([0,0,base_thickness - pocket_depth + 0.1]) red_insert();
-color("blue") translate([0,0,base_thickness - pocket_depth + 0.1]) blue_inserts();
+// color("white") white_base();
+// color("red") translate([0,0,base_thickness - pocket_depth + 0.1]) red_insert();
+// color("blue") translate([0,0,base_thickness - pocket_depth + 0.1]) blue_inserts();

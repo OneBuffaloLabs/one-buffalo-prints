@@ -9,7 +9,7 @@ A multi-part, glue-less friction-fit 3D model of the Buffalo Bills logo. Designe
 ## 📂 Project Structure
 
 - `snapfit_bills.scad` — The core parametric OpenSCAD model.
-- `snapfit-bills-base-white.stl` — The main backing plate with recessed pockets.
+- `snapfit-bills-base-white.stl` — The main 6mm backing plate with recessed pockets.
 - `snapfit-bills-insert-blue.stl` — The main buffalo body and legs.
 - `snapfit-bills-insert-red.stl` — The red streak insert.
 - `images/`
@@ -24,30 +24,32 @@ This model is designed to be printed in three separate color stages and snapped 
 ### Slicer Settings
 
 - **Material:** PLA (recommended for stiffness).
-- **Layer Height:** 0.2mm.
-- **Wall Generator:** Use **Arachne** (standard in OrcaSlicer / Bambu Studio / Cura 5+). This ensures the thin white gaps around the nose print accurately.
-- **Elephant Foot Compensation:** 0.15mm to 0.2mm. _CRITICAL for the snap fit! If the first layer squishes out, the pieces will not fit into the base._
-- **Top Surface Pattern:** Concentric (provides a professional, sweeping finish that follows the logo's curves).
-- **Infill:** 15% (Grid or Gyroid).
+- **Layer Height:** 0.2mm
+- **Base Thickness:** 6.0mm (Premium heft)
+- **Wall Generator:** **Arachne (REQUIRED)**. Classic wall generators will struggle with the thin gaps around the eye and the red streak's narrow tail
+- **Elephant Foot Compensation:** 0.15mm. *CRITICAL for the snap fit! If the first layer squishes out, the pieces will not fit into the base*
+- **Top Surface Pattern:** Concentric (provides a professional, sweeping finish that follows the logo's curves)
+- **Infill:** 15% Gyroid
 
 ## 🧩 Assembly & Fit Guide
 
 This model is a **SnapFit** design, meaning it relies on friction and precise tolerances to hold together.
 
-1. **Clearance Check:** The model is designed with a standard `0.15mm` clearance. If your printer's flow rate is perfectly calibrated, the pieces will "click" in firmly.
-2. **Installation:** Lay the white base on a flat, hard surface. Position the blue body first, then the red streak. Press down firmly with your thumb.
+1. **Dual-Tolerance Design:** Because the red streak is much thinner than the blue body, this model uses two different clearances:
+   - **Blue Body:** 0.10mm clearance
+   - **Red Streak:** 0.05mm clearance
+2. **Installation:** Lay the white base on a flat, hard surface. Position the blue body first, then the red streak. Press down firmly with the flat of your thumb
 3. **Troubleshooting:**
-   - **Too Tight?** If you cannot press the pieces in, double-check your slicer's _Elephant Foot Compensation_. You can also lightly scrape/sand the bottom edges of the inserts.
-   - **Too Loose?** If the pieces fall out when held up, a single tiny drop of CA glue (Super Glue) in the pocket will secure them permanently.
+   - **Too Tight?** If you cannot press the pieces in, double-check that your Wall Generator is set to Arachne. You can also lightly scrape/sand the bottom edges of the inserts
+   - **Too Loose?** Every printer handles tolerances differently. If the pieces fall out, a single tiny drop of CA glue (Super Glue) in the pocket will secure them permanently
 
 ## 🔧 Customization
 
-To structurally adjust the tightness of the fit without using glue, open `snapfit_bills.scad` and tweak the `clearance` variable:
+To structurally adjust the tightness of the fit, open `snapfit_bills.scad` and tweak the clearance variables:
 
-- `clearance = 0.15;` (Standard Tight)
-- `clearance = 0.20;` (Easier assembly/Looser)
-- `clearance = 0.10;` (Extremely tight)
+- `clearance = 0.10;` (Main body fit)
+- `red_clearance = 0.05;` (Thin streak fit)
 
 ---
 
-_Disclaimer: This is a fan-art project provided for personal use only. It is not affiliated with, authorized by, or endorsed by the Buffalo Bills or the National Football League (NFL)._
+*Disclaimer: This is a fan-art project provided for personal use only. It is not affiliated with, authorized by, or endorsed by the Buffalo Bills or the National Football League (NFL).*
