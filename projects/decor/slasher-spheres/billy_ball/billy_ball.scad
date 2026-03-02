@@ -26,7 +26,7 @@ accent_pocket_extra_depth = 0.5; // Sinks holes slightly deeper for a flush look
 // Face Proportions
 eye_outer_radius = 6.5;  // Outer bound of the black eye
 eye_red_outer = 4.2;     // Outer edge of the red ring
-eye_red_inner = 2;     // SHRUNK from 2.8 to make the inner black pupil smaller
+eye_red_inner = 2;       // SHRUNK from 2.8 to make the inner black pupil smaller
 red_ring_depth = 1.2;    // How deep the red ring snaps into the black eye
 
 spiral_max_radius = 8.5;
@@ -40,6 +40,13 @@ eye_rotation = -15;  // Angle of the eye oval (Negative = inner corners point DO
 
 cheek_tilt   = 21;   // Vertical height of spirals (Higher = further up)
 cheek_pan    = 48;   // Horizontal spacing of spirals
+
+// === BOWTIE PLACEMENT ===
+bowtie_tilt        = -28;  // Placed ~7mm under the ring on the bottom shell
+bowtie_knot_size   = 12;
+bowtie_wing_length = 25;
+bowtie_peg_radius  = 4;
+bowtie_peg_depth   = 3;
 
 // === TOLERANCES ===
 mechanical_clearance = 0.05; // Fit between main shell parts
@@ -60,7 +67,7 @@ front_ring_color = "black";
 button_color = "black";
 filler_color = "black";
 c_black = "black";
-c_red = "#cc0000";
+c_red = "red";
 
 // === RENDER LOGIC ===
 
@@ -83,6 +90,10 @@ if (part_to_render == "all") {
             color(c_red) draw_eyes_red(hover=30); // Pops OUT of the black eye
             color(c_red) draw_cheeks(is_pocket=false, hover=15);
         }
+        // Features attached to Bottom Shell
+        translate([0, 0, -35]) {
+            color(c_red) draw_bowtie(hover=30); // Increased hover so you can clearly see the peg/hole!
+        }
     } else {
         // Normal Assembled View
         translate([0, 0, eps]) color(top_color) top_mask();
@@ -97,6 +108,10 @@ if (part_to_render == "all") {
             color(c_black) draw_eyes_black(hover=0);
             color(c_red) draw_eyes_red(hover=0);
             color(c_red) draw_cheeks(is_pocket=false, hover=0);
+        }
+        // Features attached to Bottom Shell
+        translate([0, 0, -eps]) {
+            color(c_red) draw_bowtie(hover=0);
         }
     }
 } else if (part_to_render != "chips_black" && part_to_render != "chips_red") {
@@ -145,6 +160,9 @@ module bottom_shell() {
         translate([0, -ball_radius + front_pocket_depth, 0])
             rotate([90, 0, 0])
                 cylinder(r=front_ring_outer_r + mechanical_clearance, h=front_pocket_depth + eps * 2, center=false);
+                
+        // Bowtie Peg Hole
+        draw_bowtie_pocket();
     }
 }
 
@@ -272,6 +290,45 @@ module draw_cheeks(is_pocket = true, hover = 0) {
     }
 }
 
+// --- Billy's Bowtie ---
+module bowtie_base_shape() {
+    module wing() {
+        hull() {
+            sphere(d=bowtie_knot_size);
+            translate([bowtie_wing_length, 0, 0]) 
+                scale([1, 2, 1]) sphere(d=bowtie_knot_size);
+        }
+    }
+    wing();
+    mirror([1,0,0]) wing();
+}
+
+module draw_bowtie_pocket() {
+    // Cut the hole INSIDE the ball (+Z points toward center)
+    place_outward(tilt=bowtie_tilt, pan=0, hover=0)
+        translate([0, 0, -eps])
+            cylinder(r=bowtie_peg_radius, h=bowtie_peg_depth + 1); // 1mm deeper so it doesn't bottom out
+}
+
+module draw_bowtie(hover = 0) {
+    place_outward(tilt=bowtie_tilt, pan=0, hover=hover)
+        union() {
+            // The Peg (Points INWARD into the hole, +Z)
+            translate([0, 0, -eps])
+                cylinder(r=bowtie_peg_radius - chip_clearance, h=bowtie_peg_depth + eps);
+            
+            // The Flat-Backed Bowtie Body (Points OUTWARD away from shell, -Z)
+            difference() {
+                translate([0, 0, -(bowtie_knot_size/2 - 1.5)])
+                    bowtie_base_shape();
+                
+                // Cut off the back spheres so they mate perfectly flat against the shell
+                translate([0, 0, 50])
+                    cube([100, 100, 100], center=true);
+            }
+        }
+}
+
 // === PRINTABLE CHIP LAYOUTS ===
 
 module layout_chips_black() {
@@ -320,5 +377,25 @@ module layout_chips_red() {
                         translate([r2*cos(a2), r2*sin(a2)]) circle(r=spiral_thickness/2, $fn=16);
                     }
                 }
+    }
+
+    // Bowtie Chip (Oriented face-up for slicer supports)
+    translate([0, -45, 0]) {
+        union() {
+            // Peg touches the build plate and points UP (+Z)
+            cylinder(r=bowtie_peg_radius - chip_clearance, h=bowtie_peg_depth + eps);
+            
+            // Flat back rests perfectly on top of the peg, body points UP (+Z)
+            translate([0, 0, bowtie_peg_depth]) {
+                difference() {
+                    translate([0, 0, bowtie_knot_size/2 - 1.5])
+                        bowtie_base_shape();
+                    
+                    // Cut everything below to keep the back perfectly flat
+                    translate([0, 0, -50])
+                        cube([100, 100, 100], center=true);
+                }
+            }
+        }
     }
 }
