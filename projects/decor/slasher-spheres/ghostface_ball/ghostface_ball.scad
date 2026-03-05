@@ -1,5 +1,7 @@
 /* GHOSTFACE (SCREAM) POKÉBALL */
 
+include <../../../helpers/pokeball/filler.scad>;
+
 // --- PARAMETRIC VARIABLES ---
 part_to_render = "all"; // [all, top, bottom, ring, front_ring, button, filler, chips_black, chips_white, debug_2d_right_eye, debug_2d_left_eye, debug_2d_nose]
 exploded_view = false;
@@ -7,11 +9,6 @@ debug_transparent_chips = false;
 
 ball_radius = 40;
 ring_height = 6;
-
-// Rectangular Filler Dimensions
-filler_width = 24;
-filler_length = 14;
-filler_height = 18;
 
 // Front Assembly Dimensions
 front_ring_outer_r = 13;
@@ -61,8 +58,6 @@ mouth_chip_thickness = 2.5;
 mechanical_clearance = 0.05;
 chip_clearance = 0.05;
 button_clearance = 0.0;
-filler_xy_clearance = 0.1;
-filler_z_clearance = 0.5;
 
 // --- MANIFOLD GEOMETRY & RESOLUTION ---
 eps = 0.01;
@@ -152,7 +147,7 @@ module top_mask() {
     translate([0, 0, -47])
       cube([150, 150, 100], center=true);
 
-    cube([filler_width + filler_xy_clearance, filler_length + filler_xy_clearance, filler_height + filler_z_clearance], center=true);
+    filler_cutout();
 
     translate([0, -ball_radius + front_pocket_depth, 0])
       rotate([90, 0, 0])
@@ -174,7 +169,7 @@ module bottom_shell() {
     translate([0, 0, -87])
       cube([150, 150, 100], center=true);
 
-    cube([filler_width + filler_xy_clearance, filler_length + filler_xy_clearance, filler_height + filler_z_clearance], center=true);
+    filler_cutout();
 
     translate([0, -ball_radius + front_pocket_depth, 0])
       rotate([90, 0, 0])
@@ -189,16 +184,12 @@ module center_ring() {
   difference() {
     cylinder(r=ball_radius - 0.5, h=ring_height, center=true);
 
-    cube([filler_width + filler_xy_clearance, filler_length + filler_xy_clearance, ring_height + eps * 2], center=true);
+    filler_cutout();
 
     translate([0, -ball_radius + front_pocket_depth, 0])
       rotate([90, 0, 0])
         cylinder(r=front_ring_outer_r + mechanical_clearance, h=front_pocket_depth + eps * 2, center=false);
   }
-}
-
-module alignment_filler() {
-  cube([filler_width, filler_length, filler_height], center=true);
 }
 
 module front_ring() {

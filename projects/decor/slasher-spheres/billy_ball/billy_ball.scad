@@ -1,16 +1,14 @@
 /* BILLY THE PUPPET (SAW) POKÉBALL */
 
+// Import the shared filler system
+include <../../../helpers/pokeball/filler.scad>; 
+
 // === CORE DIMENSIONS ===
 part_to_render = "all"; // [all, top, bottom, ring, front_ring, button, filler, chips_black, chips_red]
 exploded_view = false;
 
 ball_radius = 40;
 ring_height = 6;
-
-// Rectangular Filler Dimensions
-filler_width = 24;
-filler_length = 14;
-filler_height = 18;
 
 // Front Assembly Dimensions
 front_ring_outer_r = 13;
@@ -52,8 +50,6 @@ bowtie_peg_depth   = 3;
 mechanical_clearance = 0.05; // Fit between main shell parts
 chip_clearance = 0.05;       // Fit for snap-in face features
 button_clearance = 0.05;     // Fit for the front button assembly
-filler_xy_clearance = 0.1;   // Alignment peg horizontal tolerance
-filler_z_clearance = 0.5;    // Alignment peg vertical tolerance
 
 // === PRINT SETTINGS & RESOLUTION ===
 eps = 0.01;
@@ -64,7 +60,7 @@ top_color = "white";
 bottom_color = "white";
 ring_color = "black";
 front_ring_color = "black";
-button_color = "black";
+button_color = "white";
 filler_color = "black";
 c_black = "black";
 c_red = "red";
@@ -133,7 +129,7 @@ module top_mask() {
         translate([0, 0, -50 + (ring_height / 2)])
             cube([150, 150, 100], center=true);
 
-        cube([filler_width + filler_xy_clearance, filler_length + filler_xy_clearance, filler_height + filler_z_clearance], center=true);
+        filler_cutout();
 
         translate([0, -ball_radius + front_pocket_depth, 0])
             rotate([90, 0, 0])
@@ -155,7 +151,7 @@ module bottom_shell() {
         translate([0, 0, -87])
             cube([150, 150, 100], center=true);
 
-        cube([filler_width + filler_xy_clearance, filler_length + filler_xy_clearance, filler_height + filler_z_clearance], center=true);
+        filler_cutout();
 
         translate([0, -ball_radius + front_pocket_depth, 0])
             rotate([90, 0, 0])
@@ -170,16 +166,12 @@ module center_ring() {
     difference() {
         cylinder(r=ball_radius - 0.5, h=ring_height, center=true);
 
-        cube([filler_width + filler_xy_clearance, filler_length + filler_xy_clearance, ring_height + eps * 2], center=true);
+        filler_cutout();
 
         translate([0, -ball_radius + front_pocket_depth, 0])
             rotate([90, 0, 0])
                 cylinder(r=front_ring_outer_r + mechanical_clearance, h=front_pocket_depth + eps * 2, center=false);
     }
-}
-
-module alignment_filler() {
-    cube([filler_width, filler_length, filler_height], center=true);
 }
 
 module front_ring() {
