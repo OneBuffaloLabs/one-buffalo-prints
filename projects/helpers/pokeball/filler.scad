@@ -6,7 +6,7 @@ filler_length = 14;
 filler_height = 18;
 
 // Clearances
-filler_xy_clearance = 0.1;
+filler_xy_clearance = 0.15;
 filler_z_clearance = 0.5;
 
 // The printable peg part
