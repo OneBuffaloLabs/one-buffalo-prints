@@ -1,37 +1,16 @@
 /* JASON VOORHEES POKÉBALL */
 
+include <../../../helpers/pokeball/filler.scad>;
+include <../../../helpers/pokeball/core.scad>;
+
 // --- PARAMETRIC VARIABLES ---
 part_to_render = "all"; // [all, top, bottom, ring, front_ring, button, filler, chips_black, chips_red, chips_silver]
 exploded_view = false;
 debug_transparent_chips = false; // TRUE = Glass chips so you can see the holes!
 
-ball_radius = 40;
-ring_height = 6;
-
-// Rectangular Filler Dimensions
-filler_width = 24;
-filler_length = 14;
-filler_height = 18;
-
-// Front Assembly Dimensions
-front_ring_outer_r = 13;
-front_ring_inner_r = 9;
-front_ring_depth = 4;
-button_inner_radius = 7;
-front_pocket_depth = 6;
-
-// --- TOLERANCES & CLEARANCES ---
-mechanical_clearance = 0.05;
-chip_clearance = 0.05;
-button_clearance = 0.0;
+// --- HARDWARE & FEATURES ---
 pocket_depth = 2.5;
 accent_pocket_extra_depth = 0.5; // Sinks holes deeper so chips can sit flush
-filler_xy_clearance = 0.1;
-filler_z_clearance = 0.5;
-
-// --- MANIFOLD GEOMETRY & RESOLUTION ---
-eps = 0.01;
-$fn = $preview ? 32 : 120;
 
 // --- Colors ---
 top_color = "white";
@@ -93,12 +72,12 @@ if (part_to_render == "all") {
   }
 } else if (part_to_render != "chips_black" && part_to_render != "chips_red" && part_to_render != "chips_silver") {
   // --- EXPORT MODE ---
-  if (part_to_render == "top") color("white") top_mask();
-  if (part_to_render == "bottom") color("black") bottom_shell();
-  if (part_to_render == "ring") color("#2a2a2a") center_ring();
-  if (part_to_render == "front_ring") color("silver") front_ring();
-  if (part_to_render == "button") color("red") center_button();
-  if (part_to_render == "filler") color("gold") alignment_filler();
+  if (part_to_render == "top") color(top_color) top_mask();
+  if (part_to_render == "bottom") color(bottom_color) bottom_shell();
+  if (part_to_render == "ring") color(ring_color) center_ring();
+  if (part_to_render == "front_ring") color(front_ring_color) front_ring();
+  if (part_to_render == "button") color(button_color) center_button();
+  if (part_to_render == "filler") color(filler_color) alignment_filler();
 }
 
 // --- MAIN MODULES ---
@@ -111,7 +90,7 @@ module top_mask() {
     translate([0, 0, -47])
       cube([150, 150, 100], center=true);
 
-    cube([filler_width + filler_xy_clearance, filler_length + filler_xy_clearance, filler_height + filler_z_clearance], center=true);
+    filler_cutout();
 
     translate([0, -ball_radius + front_pocket_depth, 0])
       rotate([90, 0, 0])
@@ -136,7 +115,7 @@ module bottom_shell() {
     translate([0, 0, -87])
       cube([150, 150, 100], center=true);
 
-    cube([filler_width + filler_xy_clearance, filler_length + filler_xy_clearance, filler_height + filler_z_clearance], center=true);
+    filler_cutout();
 
     translate([0, -ball_radius + front_pocket_depth, 0])
       rotate([90, 0, 0])
@@ -146,50 +125,7 @@ module bottom_shell() {
   }
 }
 
-module center_ring() {
-  difference() {
-    cylinder(r=ball_radius - 0.5, h=ring_height, center=true);
-
-    cube([filler_width + filler_xy_clearance, filler_length + filler_xy_clearance, ring_height + eps * 2], center=true);
-
-    translate([0, -ball_radius + front_pocket_depth, 0])
-      rotate([90, 0, 0])
-        cylinder(r=front_ring_outer_r + mechanical_clearance, h=front_pocket_depth + eps * 2, center=false);
-  }
-}
-
-module alignment_filler() {
-  cube([filler_width, filler_length, filler_height], center=true);
-}
-
-module front_ring() {
-  translate([0, -(ball_radius - (front_ring_depth / 2)), 0])
-    rotate([90, 0, 0])
-      difference() {
-        cylinder(r=front_ring_outer_r - button_clearance, h=front_ring_depth, center=true);
-        cylinder(r=front_ring_inner_r + button_clearance, h=front_ring_depth + eps * 2, center=true);
-      }
-}
-
-module center_button() {
-  translate([0, -(ball_radius - (front_ring_depth / 2)), 0])
-    rotate([90, 0, 0])
-      union() {
-        cylinder(r=front_ring_inner_r - button_clearance, h=front_ring_depth, center=true);
-        translate([0, 0, front_ring_depth / 2])
-          cylinder(r=button_inner_radius, h=2, center=false);
-      }
-}
-
 // --- FEATURE PLACEMENT ENGINE ---
-
-module place_outward(tilt, pan, hover = 0) {
-  rotate([0, 0, pan])
-    rotate([-tilt, 0, 0])
-      translate([0, -(ball_radius + hover), 0])
-        rotate([-90, 0, 0])
-          children();
-}
 
 module draw_eyes(is_pocket = true, hover = 0) {
   r_val = is_pocket ? 6 : 6 - chip_clearance;

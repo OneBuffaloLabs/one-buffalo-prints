@@ -1,24 +1,18 @@
 /* GHOSTFACE (SCREAM) POKÉBALL */
 
+include <../../../helpers/pokeball/filler.scad>;
+include <../../../helpers/pokeball/core.scad>;
+
 // --- PARAMETRIC VARIABLES ---
 part_to_render = "all"; // [all, top, bottom, ring, front_ring, button, filler, chips_black, chips_white, debug_2d_right_eye, debug_2d_left_eye, debug_2d_nose]
 exploded_view = false;
 debug_transparent_chips = false;
 
-ball_radius = 40;
-ring_height = 6;
-
-// Rectangular Filler Dimensions
-filler_width = 24;
-filler_length = 14;
-filler_height = 18;
-
-// Front Assembly Dimensions
-front_ring_outer_r = 13;
-front_ring_inner_r = 9;
-front_ring_depth = 4;
-button_inner_radius = 7;
-front_pocket_depth = 6;
+// --- CLEARANCES (Fine-tune for press-fit) ---
+right_eye_clearance = 0.05; 
+left_eye_clearance = 0.00;  
+nose_clearance = 0.05;
+mouth_clearance = 0.05;
 
 // --- EYE TWEAKS & PLACEMENT ---
 right_eye_svg_x = -7;   
@@ -44,29 +38,21 @@ nose_tilt = 25;
 nose_pan = 0;           
 nose_rotation = 0;      
 
-nose_pocket_depth = 3.5;   
+nose_pocket_depth = 2.5;   
 nose_chip_thickness = 2.5; 
 
 // --- MOUTH TWEAKS & PLACEMENT ---
 mouth_width = 22.5;      
 mouth_height = 30;       
 mouth_rounding = 3;      
-mouth_tilt = -30;        
+mouth_tilt = -38;        
 mouth_pan = 0;           
+
+mouth_curve_radius = 18; // Size of the cutout curve at the top of the mouth
+mouth_curve_bite = 4;    // How deep the curve bites into the flat top
 
 mouth_pocket_depth = 3.5;   
 mouth_chip_thickness = 2.5; 
-
-// --- TOLERANCES & CLEARANCES ---
-mechanical_clearance = 0.05;
-chip_clearance = 0.05;
-button_clearance = 0.0;
-filler_xy_clearance = 0.1;
-filler_z_clearance = 0.5;
-
-// --- MANIFOLD GEOMETRY & RESOLUTION ---
-eps = 0.01;
-$fn = $preview ? 32 : 120;
 
 // --- Colors ---
 top_color = "white";
@@ -152,7 +138,7 @@ module top_mask() {
     translate([0, 0, -47])
       cube([150, 150, 100], center=true);
 
-    cube([filler_width + filler_xy_clearance, filler_length + filler_xy_clearance, filler_height + filler_z_clearance], center=true);
+    filler_cutout();
 
     translate([0, -ball_radius + front_pocket_depth, 0])
       rotate([90, 0, 0])
@@ -174,7 +160,7 @@ module bottom_shell() {
     translate([0, 0, -87])
       cube([150, 150, 100], center=true);
 
-    cube([filler_width + filler_xy_clearance, filler_length + filler_xy_clearance, filler_height + filler_z_clearance], center=true);
+    filler_cutout();
 
     translate([0, -ball_radius + front_pocket_depth, 0])
       rotate([90, 0, 0])
@@ -185,50 +171,7 @@ module bottom_shell() {
   }
 }
 
-module center_ring() {
-  difference() {
-    cylinder(r=ball_radius - 0.5, h=ring_height, center=true);
-
-    cube([filler_width + filler_xy_clearance, filler_length + filler_xy_clearance, ring_height + eps * 2], center=true);
-
-    translate([0, -ball_radius + front_pocket_depth, 0])
-      rotate([90, 0, 0])
-        cylinder(r=front_ring_outer_r + mechanical_clearance, h=front_pocket_depth + eps * 2, center=false);
-  }
-}
-
-module alignment_filler() {
-  cube([filler_width, filler_length, filler_height], center=true);
-}
-
-module front_ring() {
-  translate([0, -(ball_radius - (front_ring_depth / 2)), 0])
-    rotate([90, 0, 0])
-      difference() {
-        cylinder(r=front_ring_outer_r - button_clearance, h=front_ring_depth, center=true);
-        cylinder(r=front_ring_inner_r + button_clearance, h=front_ring_depth + eps * 2, center=true);
-      }
-}
-
-module center_button() {
-  translate([0, -(ball_radius - (front_ring_depth / 2)), 0])
-    rotate([90, 0, 0])
-      union() {
-        cylinder(r=front_ring_inner_r - button_clearance, h=front_ring_depth, center=true);
-        translate([0, 0, front_ring_depth / 2])
-          cylinder(r=button_inner_radius, h=2, center=false);
-      }
-}
-
 // --- FEATURE PLACEMENT ENGINE ---
-
-module place_outward(tilt, pan, hover = 0) {
-  rotate([0, 0, pan])
-    rotate([-tilt, 0, 0])
-      translate([0, -(ball_radius + hover), 0])
-        rotate([-90, 0, 0])
-          children();
-}
 
 module get_right_eye_2d(clearance = 0) {
   offset(delta = clearance)
@@ -255,7 +198,9 @@ module get_nose_2d(clearance = 0) {
 }
 
 module draw_eyes(is_pocket = true, hover = 0) {
-  clearance = is_pocket ? 0 : -chip_clearance;
+  r_clearance = is_pocket ? 0 : -right_eye_clearance;
+  l_clearance = is_pocket ? 0 : -left_eye_clearance;
+  
   recess_depth = eye_pocket_depth - eye_chip_thickness;
   z_off = is_pocket ? -eps : recess_depth;
   h_val = is_pocket ? eye_pocket_depth + eps : eye_chip_thickness;
@@ -264,17 +209,17 @@ module draw_eyes(is_pocket = true, hover = 0) {
     rotate([0, 0, right_eye_rotation])
       translate([0, 0, z_off])
         linear_extrude(height=h_val)
-          get_right_eye_2d(clearance);
+          get_right_eye_2d(r_clearance);
 
   place_outward(eye_tilt, -eye_pan, hover)
     rotate([0, 0, left_eye_rotation])
       translate([0, 0, z_off])
         linear_extrude(height=h_val)
-          get_left_eye_2d(clearance);
+          get_left_eye_2d(l_clearance);
 }
 
 module draw_nose(is_pocket = true, hover = 0) {
-  clearance = is_pocket ? 0 : -chip_clearance;
+  clearance = is_pocket ? 0 : -nose_clearance;
   recess_depth = nose_pocket_depth - nose_chip_thickness;
   z_off = is_pocket ? -eps : recess_depth;
   h_val = is_pocket ? nose_pocket_depth + eps : nose_chip_thickness;
@@ -287,31 +232,26 @@ module draw_nose(is_pocket = true, hover = 0) {
 }
 
 module draw_mouth(is_pocket = true, hover = 0) {
-  clearance = is_pocket ? 0 : -chip_clearance;
+  clearance = is_pocket ? 0 : -mouth_clearance;
   recess_depth = mouth_pocket_depth - mouth_chip_thickness;
   z_off = is_pocket ? -eps : recess_depth;
   h_val = is_pocket ? mouth_pocket_depth + eps : mouth_chip_thickness;
 
-  difference() {
-    // 1. Draw the parametric triangle (Flipped: Wide top, sharp point bottom!)
-    place_outward(mouth_tilt, mouth_pan, hover)
-      translate([0, 0, z_off])
+  place_outward(mouth_tilt, mouth_pan, hover)
+    translate([0, 0, z_off])
+      difference() {
+        // Base Parametric Triangle
         linear_extrude(height=h_val)
           offset(delta = clearance)
             offset(r = mouth_rounding) 
               offset(delta = -mouth_rounding) 
                 polygon([ [-mouth_width/2, -mouth_height/2], [mouth_width/2, -mouth_height/2], [0, mouth_height/2] ]);
 
-    // 2. Bite out the top using the exact dimensions of the front ring!
-    ring_cut_r = is_pocket ? front_ring_outer_r : front_ring_outer_r + mechanical_clearance;
-    translate([0, -ball_radius, 0])
-      rotate([90, 0, 0])
-        cylinder(r=ring_cut_r, h=100, center=true);
-
-    // 3. Failsafe to protect the center ring equator (Z = -3 cut)
-    translate([0, 0, 50 - 3])
-      cube([100, 100, 100], center=true);
-  }
+        // Local Top Curve Cut (Replaces the global front-ring cut)
+        // Positioned relative to the top edge (Y = -mouth_height/2)
+        translate([0, -mouth_height/2 - mouth_curve_radius + mouth_curve_bite, h_val / 2])
+          cylinder(r=mouth_curve_radius, h=h_val * 3, center=true, $fn=64);
+      }
 }
 
 // --- PRINTABLE CHIP LAYOUTS ---
@@ -319,15 +259,15 @@ module draw_mouth(is_pocket = true, hover = 0) {
 module layout_chips_black() {
   translate([15, 0, 0])
     linear_extrude(height=eye_chip_thickness)
-      get_right_eye_2d(-chip_clearance);
+      get_right_eye_2d(-right_eye_clearance);
 
   translate([-15, 0, 0])
     linear_extrude(height=eye_chip_thickness)
-      get_left_eye_2d(-chip_clearance);
+      get_left_eye_2d(-left_eye_clearance);
 
   translate([0, 20, 0])
     linear_extrude(height=nose_chip_thickness)
-      get_nose_2d(-chip_clearance);
+      get_nose_2d(-nose_clearance);
 }
 
 module layout_chips_white() {
