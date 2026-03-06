@@ -32,7 +32,7 @@ To ensure consistency across the entire collection, every sphere in this project
 
 **Friday the 13th**
 
-- [x] ✅ **[Jason Voorhees](./jason/)**
+- [x] ✅ **[Jason Voorhees](./jason_ball/)**
 
 **A Nightmare on Elm Street**
 
@@ -50,7 +50,7 @@ To ensure consistency across the entire collection, every sphere in this project
 
 **Scream**
 
-- [ ] ⏳ Ghostface
+- [x] ✅ [Ghostface](./ghostface_ball/)
 
 **Child's Play**
 
@@ -58,7 +58,7 @@ To ensure consistency across the entire collection, every sphere in this project
 
 **Saw**
 
-- [ ] 📅 Billy the Puppet
+- [ ] ⏳ [Billy the Puppet](./billy_ball/)
 
 **IT**
 
