@@ -6,6 +6,7 @@ include <../../../helpers/pokeball/core.scad>;
 // === RENDER SETTINGS ===
 part_to_render = "all"; // [all, top, bottom, ring, front_ring, button, filler, chips_black, chips_red]
 exploded_view = false;
+debug_transparent_chips = false;
 
 // === HARDWARE & FEATURES ===
 pocket_depth = 2.5;
@@ -25,6 +26,17 @@ spiral_turns = 2.5;
 eye_tilt = 40;
 eye_pan = 25;
 eye_rotation = -15;
+
+// Raised Eyebrow Ridge Tweaks
+// Forced to be high enough to NOT cover eyes.
+brow_tilt = 42;          // Independent height, slightly higher to clear eyes
+brow_pan = 27;           // Independent spacing, slightly wider than eyes
+brow_thickness = 7;    // Uniform thickness
+brow_radius = 12;      // Arc radius over eye
+brow_angle_start = 0;   // Outer edge
+brow_angle_end = 110;    // Inner edge
+brow_rotation = -20;      // Slant of the brow ridges
+brow_protrusion = 0;  // Negative value sinks deeper into the sphere to guarantee connection
 
 cheek_tilt = 21;
 cheek_pan = 48;
@@ -48,6 +60,10 @@ c_red = "red";
 
 // === RENDER LOGIC ===
 
+// Helper colors for the transparent debugger!
+c_black_dbg = debug_transparent_chips ? [0, 0, 0, 0.5] : "black";
+c_red_dbg = debug_transparent_chips ? [1, 0, 0, 0.5] : "red";
+
 if (part_to_render == "chips_black") { color(c_black) layout_chips_black(); }
 if (part_to_render == "chips_red") { color(c_red) layout_chips_red(); }
 
@@ -61,8 +77,8 @@ if (part_to_render == "all") {
     translate([0, 0, 15]) color(filler_color) alignment_filler();
 
     translate([0, 0, 35]) {
-      color(c_black) draw_eyes_black(hover=15);
-      color(c_red) draw_eyes_red(hover=30);
+      color(c_black_dbg) draw_eyes_black(hover=15);
+      color(c_red_dbg) draw_eyes_red(hover=30);
       color(c_red) draw_cheeks(is_pocket=false, hover=15);
     }
     translate([0, 0, -35]) {
@@ -77,8 +93,8 @@ if (part_to_render == "all") {
     color(filler_color) alignment_filler();
 
     translate([0, 0, eps]) {
-      color(c_black) draw_eyes_black(hover=0);
-      color(c_red) draw_eyes_red(hover=0);
+      color(c_black_dbg) draw_eyes_black(hover=0);
+      color(c_red_dbg) draw_eyes_red(hover=0);
       color(c_red) draw_cheeks(is_pocket=false, hover=0);
     }
     translate([0, 0, -eps]) {
@@ -98,7 +114,11 @@ if (part_to_render == "all") {
 
 module top_mask() {
   difference() {
-    sphere(r=ball_radius);
+    // UNION the base sphere and the raised eyebrows before cutting anything
+    union() {
+        sphere(r=ball_radius);
+        draw_eyebrows();
+    }
 
     translate([0, 0, -50 + (ring_height / 2)])
       cube([150, 150, 100], center=true);
@@ -132,6 +152,35 @@ module bottom_shell() {
         cylinder(r=front_ring_outer_r + mechanical_clearance, h=front_pocket_depth + eps * 2, center=false);
 
     draw_bowtie_pocket();
+  }
+}
+
+// --- Billy's Raised Eyebrow Ridges ---
+// FIX: Added mirror([0, 1, 0]) to flip the logic from mustache to frown, creating the angry look.
+module draw_eyebrows() {
+  steps = 20;
+  for (m = [1, -1]) {
+    place_outward(tilt=brow_tilt, pan=m * brow_pan, hover=0)
+      rotate([0, 0, m * brow_rotation]) // Angry tilt
+        translate([0, 0, brow_protrusion]) // Increase protrusion for connection
+          mirror([m == -1 ? 1 : 0, 0, 0]) // Left/Right symmetry
+            mirror([0, 1, 0]) // Flip downward for anger
+              for (i = [0:steps-1]) {
+                let (
+                  t1 = i / steps,
+                  t2 = (i + 1) / steps,
+                  a1 = brow_angle_start + (brow_angle_end - brow_angle_start) * t1,
+                  a2 = brow_angle_start + (brow_angle_end - brow_angle_start) * t2,
+                  x1 = brow_radius * cos(a1),
+                  y1 = brow_radius * sin(a1),
+                  x2 = brow_radius * cos(a2),
+                  y2 = brow_radius * sin(a2)
+                )
+                hull() {
+                  translate([x1, y1, 0]) sphere(r=brow_thickness / 2, $fn=16);
+                  translate([x2, y2, 0]) sphere(r=brow_thickness / 2, $fn=16);
+                }
+              }
   }
 }
 
