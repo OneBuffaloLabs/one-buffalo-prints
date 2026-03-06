@@ -9,57 +9,59 @@ exploded_view = false;
 debug_transparent_chips = false;
 
 // --- CLEARANCES (Fine-tune for press-fit) ---
-right_eye_clearance = 0.05; 
-left_eye_clearance = 0.00;  
+// Negative numbers expand the chip for a tighter fit
+right_eye_clearance = -0.05;
+left_eye_clearance = -0.05;
 nose_clearance = 0.05;
-mouth_clearance = 0.05;
+mouth_clearance = 0.00;
 
 // --- EYE TWEAKS & PLACEMENT ---
-right_eye_svg_x = -7;   
-right_eye_svg_y = 10;   
-left_eye_svg_x = -7;    
-left_eye_svg_y = 10;    
+right_eye_svg_x = -7;
+right_eye_svg_y = 10;
+left_eye_svg_x = -7;
+left_eye_svg_y = 10;
 
-eye_scale = 0.20;       
+eye_scale = 0.20;
 
-eye_tilt = 45;          
-eye_pan = 30;           
-right_eye_rotation = 20; 
-left_eye_rotation = -20;  
+eye_tilt = 45;
+right_eye_pan = 26;
+left_eye_pan = 30;
+right_eye_rotation = 20;
+left_eye_rotation = -20;
 
-eye_pocket_depth = 3.5;   
-eye_chip_thickness = 2.5; 
+eye_pocket_depth = 4;
+eye_chip_thickness = 2.5;
 
 // --- NOSE TWEAKS & PLACEMENT ---
-nose_svg_x = -4.5;      
-nose_svg_y = 4.5;       
-nose_scale = 0.20;      
-nose_tilt = 25;         
-nose_pan = 0;           
-nose_rotation = 0;      
+nose_svg_x = -4.5;
+nose_svg_y = 4.5;
+nose_scale = 0.20;
+nose_tilt = 25;
+nose_pan = 0;
+nose_rotation = 0;
 
-nose_pocket_depth = 2.5;   
-nose_chip_thickness = 2.5; 
+nose_pocket_depth = 3;
+nose_chip_thickness = 2.5;
 
 // --- MOUTH TWEAKS & PLACEMENT ---
-mouth_width = 22.5;      
-mouth_height = 30;       
-mouth_rounding = 3;      
-mouth_tilt = -38;        
-mouth_pan = 0;           
+mouth_width = 22.5;
+mouth_height = 30;
+mouth_rounding = 3;
+mouth_tilt = -38;
+mouth_pan = 0;
 
 mouth_curve_radius = 18; // Size of the cutout curve at the top of the mouth
-mouth_curve_bite = 4;    // How deep the curve bites into the flat top
+mouth_curve_bite = 4; // How deep the curve bites into the flat top
 
-mouth_pocket_depth = 3.5;   
-mouth_chip_thickness = 2.5; 
+mouth_pocket_depth = 4;
+mouth_chip_thickness = 2.5;
 
 // --- Colors ---
 top_color = "white";
 bottom_color = "black";
 ring_color = "black";
 front_ring_color = "black";
-button_color = "red";
+button_color = "white";
 filler_color = "black";
 mouth_color = "white";
 
@@ -69,21 +71,21 @@ c_black = debug_transparent_chips ? [0, 0, 0, 0.5] : "black";
 c_white = debug_transparent_chips ? [1, 1, 1, 0.5] : mouth_color;
 
 if (part_to_render == "debug_2d_right_eye") {
-  color("red") cube([100, 0.5, 0.1], center=true); 
-  color("green") cube([0.5, 100, 0.1], center=true); 
+  color("red") cube([100, 0.5, 0.1], center=true);
+  color("green") cube([0.5, 100, 0.1], center=true);
   color("black") linear_extrude(1) get_right_eye_2d();
 } else if (part_to_render == "debug_2d_left_eye") {
-  color("red") cube([100, 0.5, 0.1], center=true); 
-  color("green") cube([0.5, 100, 0.1], center=true); 
+  color("red") cube([100, 0.5, 0.1], center=true);
+  color("green") cube([0.5, 100, 0.1], center=true);
   color("black") linear_extrude(1) get_left_eye_2d();
 } else if (part_to_render == "debug_2d_nose") {
-  color("red") cube([100, 0.5, 0.1], center=true); 
-  color("green") cube([0.5, 100, 0.1], center=true); 
+  color("red") cube([100, 0.5, 0.1], center=true);
+  color("green") cube([0.5, 100, 0.1], center=true);
   color("black") linear_extrude(1) get_nose_2d();
-} else if (part_to_render == "chips_black") { 
-  color("black") layout_chips_black(); 
-} else if (part_to_render == "chips_white") { 
-  color(mouth_color) layout_chips_white(); 
+} else if (part_to_render == "chips_black") {
+  color("black") layout_chips_black();
+} else if (part_to_render == "chips_white") {
+  color(mouth_color) layout_chips_white();
 } else if (part_to_render == "all") {
   if (exploded_view == true) {
     // --- EXPANDED VIEW (TIGHTENED) ---
@@ -174,25 +176,25 @@ module bottom_shell() {
 // --- FEATURE PLACEMENT ENGINE ---
 
 module get_right_eye_2d(clearance = 0) {
-  offset(delta = clearance)
+  offset(delta=clearance)
     translate([right_eye_svg_x, right_eye_svg_y])
-      scale([eye_scale, eye_scale]) 
+      scale([eye_scale, eye_scale])
         mirror([0, 1])
           import("images/right_eye.svg");
 }
 
 module get_left_eye_2d(clearance = 0) {
-  offset(delta = clearance)
+  offset(delta=clearance)
     translate([left_eye_svg_x, left_eye_svg_y])
-      scale([eye_scale, eye_scale]) 
+      scale([eye_scale, eye_scale])
         mirror([0, 1])
           import("images/left_eye.svg");
 }
 
 module get_nose_2d(clearance = 0) {
-  offset(delta = clearance)
+  offset(delta=clearance)
     translate([nose_svg_x, nose_svg_y])
-      scale([nose_scale, nose_scale]) 
+      scale([nose_scale, nose_scale])
         mirror([0, 1])
           import("images/nose.svg");
 }
@@ -200,18 +202,18 @@ module get_nose_2d(clearance = 0) {
 module draw_eyes(is_pocket = true, hover = 0) {
   r_clearance = is_pocket ? 0 : -right_eye_clearance;
   l_clearance = is_pocket ? 0 : -left_eye_clearance;
-  
+
   recess_depth = eye_pocket_depth - eye_chip_thickness;
   z_off = is_pocket ? -eps : recess_depth;
   h_val = is_pocket ? eye_pocket_depth + eps : eye_chip_thickness;
 
-  place_outward(eye_tilt, eye_pan, hover)
+  place_outward(eye_tilt, right_eye_pan, hover)
     rotate([0, 0, right_eye_rotation])
       translate([0, 0, z_off])
         linear_extrude(height=h_val)
           get_right_eye_2d(r_clearance);
 
-  place_outward(eye_tilt, -eye_pan, hover)
+  place_outward(eye_tilt, -left_eye_pan, hover)
     rotate([0, 0, left_eye_rotation])
       translate([0, 0, z_off])
         linear_extrude(height=h_val)
@@ -242,14 +244,14 @@ module draw_mouth(is_pocket = true, hover = 0) {
       difference() {
         // Base Parametric Triangle
         linear_extrude(height=h_val)
-          offset(delta = clearance)
-            offset(r = mouth_rounding) 
-              offset(delta = -mouth_rounding) 
-                polygon([ [-mouth_width/2, -mouth_height/2], [mouth_width/2, -mouth_height/2], [0, mouth_height/2] ]);
+          offset(delta=clearance)
+            offset(r=mouth_rounding)
+              offset(delta=-mouth_rounding)
+                polygon([[-mouth_width / 2, -mouth_height / 2], [mouth_width / 2, -mouth_height / 2], [0, mouth_height / 2]]);
 
         // Local Top Curve Cut (Replaces the global front-ring cut)
         // Positioned relative to the top edge (Y = -mouth_height/2)
-        translate([0, -mouth_height/2 - mouth_curve_radius + mouth_curve_bite, h_val / 2])
+        translate([0, -mouth_height / 2 - mouth_curve_radius + mouth_curve_bite, h_val / 2])
           cylinder(r=mouth_curve_radius, h=h_val * 3, center=true, $fn=64);
       }
 }

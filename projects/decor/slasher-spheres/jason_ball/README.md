@@ -36,6 +36,7 @@ This model is designed to be printed in separate color batches and assembled.
 - **Seam Position:** **Back (REQUIRED).** Set Z-seam alignment to the back of the model to ensure a clean surface finish on all front-facing features and inserts.
 - **Orientation / Supports:** **NO SUPPORTS REQUIRED.** Print shells and the center ring with their large flat cutouts facing the build plate. Print the filler peg lying flat for maximum sheer strength.
 - **Wall Perimeters:** **3 to 4 walls.** Extra walls ensure the bottom of the pockets are solid plastic rather than fragile infill.
+- **Wall Generator:** **Arachne (REQUIRED).** This ensures the walls are solid plastic rather than fragile infill.
 - **Infill:** 15% Gyroid for shells; **100% Infill for all Chips** (black, red, and silver) to prevent snapping during installation.
 - **Elephant Foot Compensation:** 0.15mm. **CRITICAL!** If the first layer squishes, the high-tolerance chips will not seat properly.
 
