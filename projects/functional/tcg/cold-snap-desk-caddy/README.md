@@ -1,47 +1,54 @@
 # Cold Snap Desk Caddy
 
-A tiered, functional 3D printed workstation organizer designed to keep primary card-prep supplies upright, separated, and instantly accessible during box breaks and grading prep.
+<p align="center">
+<img src="images/hero.png" alt="Cold Snap Desk Caddy" width="600">
+</p>
 
-![Hero Image](images/hero-shot.jpg)
+Keep your card station organized and streamline your pack rips, grading submissions, and sales prep.
+
+The **Cold Snap Desk Caddy** keeps all your essential protective supplies neatly separated and within arm’s reach on your desk mat. Built with front cutouts and a stable footprint, it lets you pinch and pull a single sleeve or case without fumbling or creasing corners.
+
+## ✨ Features
+
+* **3-Stage Organization:** Dedicated spots for penny sleeves, semi-rigid holders, and standard 35pt toploaders.
+* **Quick-Pull Access:** Recessed front cutouts let you slide or pinch cards out smoothly without bent edges.
+* **Stable Footprint:** Wide, low-profile base designed to stay planted on your desk mat even when fully stocked.
+
+## 📦 Capacity
+
+* ~35 Standard Toploaders
+* ~45 Semi-Rigid Submission Holders (Cardboard Gold / Ultra PRO Card Savers)
+* 100+ Soft Penny Sleeves
 
 ## 🖨️ Recommended Print Settings
 
-To get the best results, especially if this is a functional part, we recommend the following settings:
-
-- **Material:** PLA or PETG (PETG recommended if your setup gets direct sunlight or sits near hot PC exhausts)
-- **Layer Height:** 0.20mm
-- **Infill:** 15% (Gyroid or Grid)
-- **Wall Loops (Perimeters):** 3-4 for extra strength
-- **Supports:** None required (oriented flat on the build plate)
-- **Brim:** Not necessary unless you have bed warping issues
+* **Material:** PLA+ or PETG (PETG is great if your desk gets direct sunlight or sits near warm electronics)
+* **Layer Height:** 0.20mm
+* **Walls/Perimeters:** 3–4 for solid, sturdy pocket dividers
+* **Infill:** 15% (Gyroid or Grid)
+* **Supports:** None required (prints flat on the build plate)
+* **Brim:** Not needed on clean, level beds
 
 ## 🔩 Hardware Required
 
-100% 3D Printed - No extra hardware needed!
+100% 3D Printed — no screws, inserts, or extra hardware needed.
 
-## 🛠️ Customizing with OpenSCAD
+## 🛠️ Making Adjustments
 
-Because this design is parametric, you can easily adjust the dimensions to fit your specific needs using the included `.scad` file.
+If you want to tweak pocket depths or wall widths to fit thicker card cases (like 55pt–130pt toploaders), you can easily edit the dimensions right at the top of the `.scad` file.
 
-**Key Variables You Can Change:**
+Open the file in OpenSCAD, update the numbers at the top, press `F6` to render, and export your new STL.
 
-- `SLOT_SLEEVE_W` / `SLOT_SLEEVE_D` - Adjusts the front penny sleeve pocket size (Default: 74mm x 42mm)
-- `SLOT_TOPLOADER_W` / `SLOT_TOPLOADER_D` - Adjusts the middle toploader pocket size (Default: 85mm x 56mm)
-- `SLOT_SEMIRIGID_W` / `SLOT_SEMIRIGID_D` - Adjusts the rear semi-rigid card saver pocket size (Default: 94mm x 50mm)
-- `WALL_T` - Outer structural perimeter thickness (Default: 3.0mm)
-- `ENABLE_SCOOP` - Set to `false` if you want a flat front wall with no thumb notch
+## 🧩 Setup
 
-_To modify, simply open the file in [OpenSCAD](https://openscad.org/), change the variables at the top of the script, press `F6` to render, and `F7` to export your new STL._
+1. Pull the print off the bed — ready to go straight from the printer.
+2. Load your supplies into their slots: penny sleeves in the front, toploaders in the middle, and semi-rigids in the back.
+3. Keep it right next to your playmat for quick, clutter-free card prep.
 
-## 🧩 Assembly Instructions
-
-1. Remove the finished print from your build plate (no support cleanup needed).
-2. Load 100+ standard penny sleeves into the front pocket.
-3. Drop ~30 standard 35pt toploaders into the middle tier.
-4. Slide ~45 standard semi-rigid card savers into the tall rear pocket.
-5. Enjoy a clean, organized grading prep and rip station!
+*(Cards, sleeves, and toploaders shown in photos are for demonstration purposes only and not included.)*
 
 ---
 
-*Part of the [Cold Front Forge](https://github.com/OneBuffaloLabs/ColdFrontForge) open-source collection. Licensed under CC BY-NC-SA 4.0.*
-*Looking for finished physical prints or custom colors? Visit our shop: [coldfrontforge.etsy.com](https://coldfrontforge.etsy.com/)*
+*Part of the [Cold Front Forge](https://github.com/OneBuffaloLabs/ColdFrontForge) open-source collection. Licensed under CC BY-NC-SA 4.0.*[cite: 2]
+
+*Looking for finished physical prints or custom colors? Visit our shop: [coldfrontforge.etsy.com*](https://www.google.com/search?q=https://coldfrontforge.etsy.com/)
