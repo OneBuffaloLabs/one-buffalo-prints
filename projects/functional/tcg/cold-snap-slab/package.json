@@ -1,0 +1,37 @@
+{
+  "name": "cold-snap-slab",
+  "version": "1.0.0",
+  "description": "Parametric universal magnetic toploader slab display with swappable QR parody labels",
+  "main": "generate-qr.js",
+  "scripts": {
+    "generate-qr": "node generate-qr.js",
+    "generate-qr:custom": "node generate-qr.js",
+    "clean": "rm -f qr-matrices.scad",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "openscad",
+    "3d-printing",
+    "tcg",
+    "toploader",
+    "card-grading",
+    "slab",
+    "pokemon",
+    "cold-snap",
+    "cold-front-forge"
+  ],
+  "author": "Cold Front Forge",
+  "license": "CC-BY-NC-SA-4.0",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.3.4",
+      "onFail": "download"
+    }
+  },
+  "packageManager": "pnpm@12.3.4",
+  "type": "module",
+  "dependencies": {
+    "qrcode": "^1.5.4"
+  }
+}

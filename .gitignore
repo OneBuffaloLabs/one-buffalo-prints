@@ -5,6 +5,9 @@
 # Slicer Output (Never commit G-code, it's specific to your printer!)
 *.gcode
 
+# Node.js Dependencies
+node_modules/
+
 # OS Hidden Files
 .DS_Store
 Thumbs.db
